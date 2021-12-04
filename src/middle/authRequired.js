@@ -5,6 +5,7 @@ const authRequired = async (ctx, next) => {
     const { authorization } = ctx.headers
     if (!authorization) {
         ctx.status = 401 
+        ctx.body = 'Error Unauthorized'
     }
     const [authType, token] = authorization.split(' ')
     if (authType !== 'Bearer') { throw Error('Invalid auth type') }
