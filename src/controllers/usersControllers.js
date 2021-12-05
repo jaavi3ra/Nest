@@ -1,7 +1,7 @@
 import moongose from 'mongoose'
-import userdata from '../Model/users.js'
 import bcrypt from 'bcryptjs'
 import * as yup from 'yup';
+import userdata from '../Model/users.js'
 
 const { ObjectId } = moongose.Types
 
@@ -16,7 +16,7 @@ const getUserController = () => {
     if (ObjectId.isValid(id)) {
       const users = await userdata.findById(id);
       if (!users) {
-        ctx.body = 'Usuario no encontrado'
+        ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
@@ -25,7 +25,7 @@ const getUserController = () => {
       }
 
     } else {
-      ctx.body = 'ID no encontrado'
+      ctx.body = 'Invalid Credetial (2)'
       ctx.status = 400
       return
     }

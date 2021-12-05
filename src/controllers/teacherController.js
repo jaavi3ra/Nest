@@ -1,6 +1,6 @@
 import moongose from 'mongoose'
-import userdata from '../Model/teacher.js'
 import * as yup from 'yup';
+import userdata from '../Model/teacher.js'
 
 const { ObjectId } = moongose.Types
 
@@ -15,7 +15,7 @@ const getTeacherController = () => {
     if (ObjectId.isValid(id)) {
       const data = await userdata.findById(id);
       if (!data) {
-        ctx.body = 'Seccion no encontrado'
+        ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
@@ -24,7 +24,7 @@ const getTeacherController = () => {
       }
 
     } else {
-      ctx.body = 'ID no encontrado'
+      ctx.body = 'Invalid Credetial (2)'
       ctx.status = 400
       return
     }

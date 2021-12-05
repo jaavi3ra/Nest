@@ -15,7 +15,7 @@ const getSubjectController = () => {
     if (ObjectId.isValid(id)) {
       const subject = await userdata.findById(id);
       if (!subject) {
-        ctx.body = 'Asignatura no encontrada'
+        ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
@@ -24,7 +24,7 @@ const getSubjectController = () => {
       }
 
     } else {
-      ctx.body = 'ID no encontrado'
+      ctx.body = 'Invalid Credetial (2)'
       ctx.status = 400
       return
     }

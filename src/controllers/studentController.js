@@ -16,7 +16,7 @@ const getStudentController = () => {
     if (ObjectId.isValid(id)) {
       const studData = await userdata.findById(id);
       if (!studData) {
-        ctx.body = 'Seccion no encontrado'
+        ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
@@ -25,7 +25,7 @@ const getStudentController = () => {
       }
 
     } else {
-      ctx.body = 'ID no encontrado'
+      ctx.body = 'Invalid Credetial (2)'
       ctx.status = 400
       return
     }

@@ -15,7 +15,7 @@ const getEvaluationController = () => {
     if (ObjectId.isValid(id)) {
       const evaData = await userdata.findById(id);
       if (!evaData) {
-        ctx.body = 'Seccion no encontrado'
+        ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
@@ -23,7 +23,7 @@ const getEvaluationController = () => {
         ctx.status = 200
       }
     } else {
-      ctx.body = 'ID no encontrado'
+      ctx.body = 'Invalid Credetial (2)'
       ctx.status = 400
       return
     }

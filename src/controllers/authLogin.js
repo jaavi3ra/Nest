@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import * as yup from 'yup'
+import moongose from 'mongoose'
 import User from '../Model/users.js'
 import { jwtSign } from '../lib/jwt.js'
-import moongose from 'mongoose'
 
 const { ObjectId } = moongose.Types
 
@@ -10,6 +10,7 @@ const getAuthControllers = () => {
 
   const login = async ctx => {
     const payload = ctx.request.body
+
     const yupSchema = yup.object().shape({
       rut: yup.string().required(),
       password: yup.string().min(6).required(),
@@ -17,14 +18,13 @@ const getAuthControllers = () => {
 
     if (!yupSchema.isValidSync(payload)) {
       ctx.status = 400
-      ctx.body = 'invalid credetial'
-      return
+      ctx.body = 'Invalid Credetial (1)'
     }
 
     const user = await User.findOne({ rut: payload.rut })
     if (!user || !bcrypt.compareSync(payload.password, user.password)) {
       ctx.status = 400
-      ctx.body = 'invalid credetial'
+      ctx.body = 'Invalid Credetial (2)'
       return
     }
 
@@ -32,7 +32,7 @@ const getAuthControllers = () => {
       sub: user._id,
       cid: user._id
     })
-    
+
     ctx.body = {
       accessToken
     }
@@ -44,7 +44,8 @@ const getAuthControllers = () => {
 
     if (!ObjectId.isValid(id)) {
       ctx.status = 404
-      ctx.body = 'Invalid Credential'
+      ctx.body = 'Invalid Credetial (1)'
+      return
     }
     const payload = ctx.request.body
 
@@ -69,9 +70,31 @@ const getAuthControllers = () => {
     ctx.status = 200
     ctx.body = 'password saved successful'
   }
+//cambiar
+  const changePasswordOutLog = async ctx => {
+    const payload = ctx.request.body
+    console.log(payload)
+
+    const yupSchema = yup.object().shape({
+      rut: yup.string().required(),
+      //password: yup.string().min(6).required(),
+    })
+    if (!yupSchema.isValidSync(payload)) {
+      ctx.status = 400
+      ctx.body = 'Invalid Credetial (1)'
+    }
+    const rut = await User.findOne({ rut: payload.rut })
+    console.log(rut)
+    if(!rut){
+      ctx.status = 400
+      ctx.body = 'Invalid Credetial (2)'
+      return
+    }
+  }
   return {
     login,
-    changePassword
+    changePassword,
+    changePasswordOutLog //cambiar
   }
 }
 export default getAuthControllers
