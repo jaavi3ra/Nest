@@ -10,7 +10,6 @@ const getAuthControllers = () => {
 
   const login = async ctx => {
     const payload = ctx.request.body
-
     const yupSchema = yup.object().shape({
       rut: yup.string().required(),
       password: yup.string().min(6).required(),
@@ -19,6 +18,7 @@ const getAuthControllers = () => {
     if (!yupSchema.isValidSync(payload)) {
       ctx.status = 400
       ctx.body = 'invalid credetial'
+      return
     }
 
     const user = await User.findOne({ rut: payload.rut })
@@ -32,7 +32,7 @@ const getAuthControllers = () => {
       sub: user._id,
       cid: user._id
     })
-
+    
     ctx.body = {
       accessToken
     }
@@ -40,7 +40,6 @@ const getAuthControllers = () => {
   }
 
   const changePassword = async ctx => {
-    // opcion de cambiar contraseña
     const { id } = ctx.request.params
 
     if (!ObjectId.isValid(id)) {
@@ -57,8 +56,9 @@ const getAuthControllers = () => {
     } catch (e) {
       ctx.status = 400
       ctx.body = e.message
+      return
     }
-    //hashear pass
+
     if (payload?.password) {
       const salt = bcrypt.genSaltSync(10)
       const hashed = bcrypt.hashSync(payload.password, salt)
@@ -66,8 +66,7 @@ const getAuthControllers = () => {
     } else {
       await User.updateOne({ _id: new ObjectId(id) }, payload)
     }
-
-    ctx.status = 204
+    ctx.status = 200
     ctx.body = 'password saved successful'
   }
   return {
