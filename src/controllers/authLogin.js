@@ -8,6 +8,32 @@ const { ObjectId } = moongose.Types
 
 const getAuthControllers = () => {
 
+  const getIdByRut = async ctx =>{
+    const payload = ctx.request.body
+    const yupSchema = yup.object().shape({
+      rut: yup.string().required(),
+    })
+    if (!yupSchema.isValidSync(payload)) {
+      ctx.status = 400
+      ctx.body = 'Invalid Credetial (1)'
+    }
+    const data = await User.findOne({ rut: payload.rut })
+    if (!data) {
+      ctx.status = 400
+      ctx.body = 'Invalid Credetial (2)'
+      return
+    }
+    const accessTokenTemp = jwtSign({
+      sub: data._id,
+      cid: data._id
+    })
+    ctx.body = {
+      accessTokenTemp
+    }
+    ctx.status = 200
+
+  }
+
   const login = async ctx => {
     const payload = ctx.request.body
 
@@ -30,7 +56,7 @@ const getAuthControllers = () => {
 
     const accessToken = jwtSign({
       sub: user._id,
-      cid: user._id
+      cid: user.rut
     })
 
     ctx.body = {
@@ -70,9 +96,11 @@ const getAuthControllers = () => {
     ctx.status = 200
     ctx.body = 'password saved successful'
   }
+
   return {
     login,
-    changePassword
+    changePassword,
+    getIdByRut
   }
 }
 export default getAuthControllers
