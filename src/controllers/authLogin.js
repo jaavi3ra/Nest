@@ -18,6 +18,7 @@ const getAuthControllers = () => {
       ctx.body = 'Invalid Credetial (1)'
     }
     const data = await User.findOne({ rut: payload.rut })
+    console.log(data)
     if (!data) {
       ctx.status = 400
       ctx.body = 'Invalid Credetial (2)'
