@@ -25,6 +25,7 @@ router.use('/api/student', authRequired,studentRouter.routes());
 router.use('/login', authRouter.routes());
 router.use('/changePassword',authRequired,password.routes()) //log in
 router.use('/getID',password.routes()) //log out
+router.use('/NewPassword',password.routes()) //log out
 
 
 
