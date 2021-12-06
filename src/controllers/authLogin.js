@@ -70,31 +70,9 @@ const getAuthControllers = () => {
     ctx.status = 200
     ctx.body = 'password saved successful'
   }
-//cambiar
-  const changePasswordOutLog = async ctx => {
-    const payload = ctx.request.body
-    console.log(payload)
-
-    const yupSchema = yup.object().shape({
-      rut: yup.string().required(),
-      //password: yup.string().min(6).required(),
-    })
-    if (!yupSchema.isValidSync(payload)) {
-      ctx.status = 400
-      ctx.body = 'Invalid Credetial (1)'
-    }
-    const rut = await User.findOne({ rut: payload.rut })
-    console.log(rut)
-    if(!rut){
-      ctx.status = 400
-      ctx.body = 'Invalid Credetial (2)'
-      return
-    }
-  }
   return {
     login,
-    changePassword,
-    changePasswordOutLog //cambiar
+    changePassword
   }
 }
 export default getAuthControllers

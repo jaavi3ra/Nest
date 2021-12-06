@@ -6,6 +6,5 @@ const route = new Router();
 const controller = controllerAuth();
 
 route.put('/:id', controller.changePassword);
-route.put('/', controller.changePasswordOutLog);
 
 export default route;
