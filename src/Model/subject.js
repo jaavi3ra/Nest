@@ -18,7 +18,7 @@ const subjectSchema = new mongoose.Schema({
     required: true,
   },
   agenda: {
-    type: Date,
+    type: String,
     required: true,
   },
 }, { timestamps: true })

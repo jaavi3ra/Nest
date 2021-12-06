@@ -12,7 +12,7 @@ const getUserController = () => {
 
   }
   const getById = async ctx => {
-    const { id } = ctx.request.params //destructoring
+    const { id } = ctx.request.params 
     if (ObjectId.isValid(id)) {
       const users = await userdata.findById(id);
       if (!users) {
@@ -36,8 +36,8 @@ const getUserController = () => {
     const payload = ctx.request.body
 
     const yupSchema = yup.object().shape({
-      firstName: yup.string().required(),
-      lastName: yup.string().required(),
+      firstname: yup.string().required(),
+      lastname: yup.string().required(),
       email: yup.string().email().required(),
       rut: yup.string().required(),
       password: yup.string().min(6).required(),

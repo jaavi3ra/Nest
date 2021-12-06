@@ -18,21 +18,15 @@ const getAuthControllers = () => {
       ctx.body = 'Invalid Credetial (1)'
     }
     const data = await User.findOne({ rut: payload.rut })
-    console.log(data)
+    console.log(data._id)
     if (!data) {
       ctx.status = 400
       ctx.body = 'Invalid Credetial (2)'
       return
     }
-    const accessTokenTemp = jwtSign({
-      sub: data._id,
-      cid: data._id
-    })
-    ctx.body = {
-      accessTokenTemp
-    }
-    ctx.status = 200
 
+    ctx.body = data._id
+    ctx.status = 200
   }
 
   const login = async ctx => {
