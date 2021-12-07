@@ -17,7 +17,7 @@ const getSectionController = () => {
         ctx.body = 'Invalid Credetial (1)' //(1)null
         return
       }
-      ctx.body = data
+      ctx.body = data._id
       ctx.status = 200
     }
   }
