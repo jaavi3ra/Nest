@@ -5,32 +5,16 @@ import userdata from '../Model/section.js'
 const { ObjectId } = moongose.Types
 
 const getSectionController = () => {
-
-  const getIDSection = async ctx =>{
-    const { id } = ctx.request.params
-    console.log(id)
-    if (ObjectId.isValid(id)){
-      const data = await userdata.findOne({ users: id })
-      console.log(data)    
-      if (!data) {
-        ctx.status = 400
-        ctx.body = 'Invalid Credetial (1)' //(1)null
-        return
-      }
-      ctx.body = data._id
-      ctx.status = 200
-    }
-  }
-
   const getAll = async ctx => {
     const sections = await userdata.find();
     ctx.body = sections
   }
 
+  //funcion buscar por id user
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const sections = await userdata.findById(id);
+      const sections = await userdata.findOne({ users: id });
       if (!sections) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -108,8 +92,7 @@ const getSectionController = () => {
     getById,
     deleteById,
     create,
-    updateById,
-    getIDSection
+    updateById
   }
 }
 export default getSectionController;
