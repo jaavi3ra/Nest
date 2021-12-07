@@ -6,6 +6,7 @@ const controller = controllersection();
 
 route.get('/', controller.getAll);
 route.get('/:id', controller.getById);
+
 route.post('/', controller.create);
 route.delete('/:id', controller.deleteById);
 route.put('/:id', controller.updateById);

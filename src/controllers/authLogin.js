@@ -24,7 +24,6 @@ const getAuthControllers = () => {
       ctx.body = 'Invalid Credetial (2)'
       return
     }
-
     ctx.body = data._id
     ctx.status = 200
   }

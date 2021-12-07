@@ -6,10 +6,27 @@ const { ObjectId } = moongose.Types
 
 const getSectionController = () => {
 
+  const getIDSection = async ctx =>{
+    const { id } = ctx.request.params
+    console.log(id)
+    if (ObjectId.isValid(id)){
+      const data = await userdata.findOne({ users: id })
+      console.log(data)    
+      if (!data) {
+        ctx.status = 400
+        ctx.body = 'Invalid Credetial (1)' //(1)null
+        return
+      }
+      ctx.body = data
+      ctx.status = 200
+    }
+  }
+
   const getAll = async ctx => {
     const sections = await userdata.find();
     ctx.body = sections
   }
+
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
@@ -91,7 +108,8 @@ const getSectionController = () => {
     getById,
     deleteById,
     create,
-    updateById
+    updateById,
+    getIDSection
   }
 }
 export default getSectionController;
