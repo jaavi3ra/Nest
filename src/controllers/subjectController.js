@@ -10,21 +10,22 @@ const getSubjectController = () => {
     const subject = await userdata.find();
     ctx.body = subject
   }
+  //buscar subjects con id section
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const subject = await userdata.findById(id);
+      const subject = await userdata.find().where({ section: id });
+      console.log(subject)
       if (!subject) {
-        ctx.body = 'Invalid Credetial (1)'
+        ctx.body = 'Invalid Credetial (4)'
         ctx.status = 404
-        return
       } else {
         ctx.body = subject
         ctx.status = 200
       }
 
     } else {
-      ctx.body = 'Invalid Credetial (2)'
+      ctx.body = 'Invalid Credetial (5)'
       ctx.status = 400
       return
     }

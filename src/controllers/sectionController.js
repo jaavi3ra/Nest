@@ -16,7 +16,7 @@ const getSectionController = () => {
     if (ObjectId.isValid(id)) {
       const sections = await userdata.findOne({ users: id });
       if (!sections) {
-        ctx.body = 'Invalid Credetial (1)'
+        ctx.body = 'Invalid Credetial (2)'
         ctx.status = 404
         return
       } else {
@@ -25,7 +25,7 @@ const getSectionController = () => {
       }
 
     } else {
-      ctx.body = 'Invalid Credetial (2)'
+      ctx.body = 'Invalid Credetial (3)'
       ctx.status = 400
       return
     }
