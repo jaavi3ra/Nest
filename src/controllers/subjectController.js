@@ -11,10 +11,30 @@ const getSubjectController = () => {
     ctx.body = subject
   }
   //buscar subjects con id section
-  const getById = async ctx => {
+  const getByIdSection = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
       const subject = await userdata.find().where({ section: id });
+      console.log(subject)
+      if (!subject) {
+        ctx.body = 'Invalid Credetial (4)'
+        ctx.status = 404
+      } else {
+        ctx.body = subject
+        ctx.status = 200
+      }
+    } else {
+      ctx.body = 'Invalid Credetial (5)'
+      ctx.status = 400
+      return
+    }
+  }
+
+  //buscar subjects con id subject
+  const getById = async ctx => {
+    const { id } = ctx.request.params
+    if (ObjectId.isValid(id)) {
+      const subject = await userdata.findById(id);
       console.log(subject)
       if (!subject) {
         ctx.body = 'Invalid Credetial (4)'
@@ -30,6 +50,7 @@ const getSubjectController = () => {
       return
     }
   }
+
   const createsubject = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
@@ -69,7 +90,7 @@ const getSubjectController = () => {
       return
     }
     const payload = ctx.request.body
-   
+
     const yupSchema = yup.object().shape({
       namesubject: yup.string().required(),
       section: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
@@ -94,7 +115,8 @@ const getSubjectController = () => {
     getAll,
     getById,
     deleteById,
-    updateById
+    updateById,
+    getByIdSection
   }
 }
 export default getSubjectController

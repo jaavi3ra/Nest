@@ -1,5 +1,5 @@
-import controllerTeacher from '../controllers/teacherController.js';
 import  Router  from '@koa/router';
+import controllerTeacher from '../controllers/teacherController.js';
 
 const route = new Router();
 const controller = controllerTeacher();

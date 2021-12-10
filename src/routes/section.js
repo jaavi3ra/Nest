@@ -1,5 +1,5 @@
-import controllersection from '../controllers/sectionController.js';
 import  Router  from '@koa/router';
+import controllersection from '../controllers/sectionController.js';
 
 const route = new Router();
 const controller = controllersection();

@@ -1,5 +1,5 @@
-import controllerAttendance from '../controllers/attendanceController.js';
 import  Router  from '@koa/router';
+import controllerAttendance from '../controllers/attendanceController.js';
 
 const route = new Router();
 const controller = controllerAttendance();
