@@ -1,20 +1,36 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/subject.js'
+import Subject from '../Model/subject.js'
 
 const { ObjectId } = moongose.Types
 
 const getSubjectController = () => {
 
   const getAll = async ctx => {
-    const subject = await userdata.find();
+    const subject = await Subject
+      .find()
+      .populate({
+        path: 'teacher',
+        populate: {
+          path: 'user'
+        }
+      })
+      .exec();
     ctx.body = subject
   }
   //buscar subjects con id section
   const getByIdSection = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const subject = await userdata.find().where({ section: id });
+      const subject = await Subject
+       .find({ section: id })
+       .populate({
+          path: 'teacher',
+          populate: {
+            path: 'user'
+          }
+        })
+        .exec();
       console.log(subject)
       if (!subject) {
         ctx.body = 'Invalid Credetial (4)'
@@ -34,7 +50,15 @@ const getSubjectController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const subject = await userdata.findById(id);
+      const subject = await Subject
+        .findById(id)
+        .populate({
+          path: 'teacher',
+          populate: {
+            path: 'user'
+          }
+        })
+        .exec();
       console.log(subject)
       if (!subject) {
         ctx.body = 'Invalid Credetial (4)'
@@ -66,7 +90,7 @@ const getSubjectController = () => {
       ctx.body = e.message
       return
     }
-    const newsubject = new userdata(payload)
+    const newsubject = new Subject(payload)
 
     try {
       const createdsubject = await newsubject.save()
@@ -107,7 +131,7 @@ const getSubjectController = () => {
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    userdata.deleteById(id)
+    Subject.deleteById(id)
     ctx.status = 200
   }
   return {
