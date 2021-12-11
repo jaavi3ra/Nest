@@ -1,19 +1,19 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/teacher.js'
+import Teacher from '../Model/teacher.js'
 
 const { ObjectId } = moongose.Types
 
 const getTeacherController = () => {
 
   const getAll = async ctx => {
-    const data = await userdata.find();
+    const data = await Teacher.find().populate('user').exec();
     ctx.body = data
   }
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const data = await userdata.findById(id);
+      const data = await Teacher.findById(id).populate('user').exec();
       if (!data) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -44,7 +44,7 @@ const getTeacherController = () => {
       ctx.body = e.message
       return
     }
-    const newdata = new userdata(payload)
+    const newdata = new Teacher(payload)
 
     try {
       const createddata = await newdata.save()
@@ -84,7 +84,7 @@ const getTeacherController = () => {
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    userdata.deleteById(id)
+    Teacher.deleteById(id)
     ctx.status = 200
   }
   return {
