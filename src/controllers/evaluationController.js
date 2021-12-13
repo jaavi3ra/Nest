@@ -33,6 +33,7 @@ const getEvaluationController = () => {
     const yupSchema = yup.object().shape({
       name: yup.string().required(),
       deadline: yup.string().required(),
+      datetime: yup.string().required(),
       subject: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
@@ -71,6 +72,7 @@ const getEvaluationController = () => {
     const yupSchema = yup.object().shape({
       name: yup.string().required(),
       deadline: yup.string().required(),
+      datetime: yup.string().required(),
       subject: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
@@ -90,7 +92,7 @@ const getEvaluationController = () => {
       ctx.status = 404
       return
     }
-    Evaluation.deleteById(id)
+    Evaluation.deleteOne(id)
     ctx.status = 200
   }
   return {

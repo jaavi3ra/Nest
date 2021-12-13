@@ -84,7 +84,7 @@ const getTeacherController = () => {
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Teacher.deleteById(id)
+    Teacher.deleteOne(id)
     ctx.status = 200
   }
   return {

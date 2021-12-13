@@ -92,7 +92,7 @@ const getSectionController = () => {
       ctx.status = 404
       return
     }
-    Section.deleteById(id)
+    Section.deleteOne(id)
     ctx.status = 200
   }
   return {

@@ -33,7 +33,7 @@ const getAttendanceController = () => {
   const create = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ 
+      student: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
@@ -72,7 +72,7 @@ const getAttendanceController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ 
+      student: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
@@ -97,7 +97,7 @@ const getAttendanceController = () => {
       ctx.status = 404
       return
     }
-    Attendance.deleteById(id)
+    Attendance.deleteOne(id)
     ctx.status = 200
   }
   return {

@@ -80,9 +80,17 @@ const getSubjectController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       namesubject: yup.string().required(),
-      section: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      teacher: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      agenda: yup.string().required()
+      section: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      teacher: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      hour: yup.string().required(),
+      day: yup.string().required(),
+      date: yup.string().required()
     })
     try {
       yupSchema.validateSync(payload)
@@ -115,12 +123,19 @@ const getSubjectController = () => {
       return
     }
     const payload = ctx.request.body
-
     const yupSchema = yup.object().shape({
       namesubject: yup.string().required(),
-      section: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      teacher: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      agenda: yup.string().required()
+      section: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      teacher: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      hour: yup.string().required(),
+      day: yup.string().required(),
+      date: yup.string().required()
     })
     try {
       yupSchema.validateSync(payload)
@@ -129,10 +144,13 @@ const getSubjectController = () => {
       ctx.body = e.message
       return
     }
+    ctx.status = 200
+
   }
+
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Subject.deleteById(id)
+    Subject.deleteOne(id)
     ctx.status = 200
   }
   return {

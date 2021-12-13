@@ -11,7 +11,7 @@ const getSessionController = () => {
     .populate({
       path: 'subject',
       populate: {
-        path: 'student',
+        path: 'section',
         populate: {
           path: 'user'
         }
@@ -22,11 +22,11 @@ const getSessionController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const sessions = await Session.findById(id)
+      const sessions = await Session.find({ subject: id})
       .populate({
         path: 'subject',
         populate: {
-          path: 'student',
+          path: 'section',
           populate: {
             path: 'user'
           }
@@ -108,7 +108,7 @@ const getSessionController = () => {
       ctx.status = 404
       return
     }
-    Session.deleteById(id)
+    Session.deleteOne(id)
     ctx.status = 200
   }
   return {

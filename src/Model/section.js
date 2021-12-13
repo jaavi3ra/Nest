@@ -7,7 +7,7 @@ const sectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  users: {
+  user: {
     type: ObjectId,
     ref: 'User',
     required: true,

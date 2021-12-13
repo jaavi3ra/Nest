@@ -36,8 +36,14 @@ const getSubmissionController = () => {
     const yupSchema = yup.object().shape({
       title: yup.string().required(),
       grade: yup.string().required(),
-      student: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      evaluation: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      student: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      evaluation: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
 
     try {
@@ -71,8 +77,14 @@ const getSubmissionController = () => {
     const yupSchema = yup.object().shape({
       title: yup.string().required(),
       grade: yup.string().required(),
-      student: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
-      evaluation: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      student: yup.string().test({ 
+        name: 'ObjectId',
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
+      evaluation: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -88,7 +100,7 @@ const getSubmissionController = () => {
       ctx.status = 404
       return
     } 
-    Submission.deleteById(id)
+    Submission.deleteOne(id)
     ctx.status = 200
   }
   return {

@@ -69,28 +69,23 @@ const getUserController = () => {
     }
 
   }
-  const deleteById = ctx => {
-    const { id } = ctx.request.params
-    User.deleteById(id)
-    ctx.status = 200
-  }
+
   const updateById = async ctx => {
     const { id } = ctx.request.params
-
+    
     if (!ObjectId.isValid(id)) {
       ctx.status = 404
       return
     }
-
+    
     const payload = ctx.request.body
-
     const yupSchema = yup.object().shape({
       firstName: yup.string().required(),
       lastName: yup.string().required(),
       email: yup.string().email().required(),
       rut: yup.string().required(),
       password: yup.string().min(6).required()
-
+      
     })
     try {
       yupSchema.validateSync(payload)
@@ -99,15 +94,21 @@ const getUserController = () => {
       ctx.body = e.message
       return
     }
-
+    
     if (payload?.password) {
       const salt = bcrypt.genSaltSync(10)
       const hashed = bcrypt.hashSync(payload.password, salt)
       await User.updateOne({ _id: new ObjectId(id) }, { ...payload, password: hashed })
     } else {
       await User.updateOne({ _id: new ObjectId(id) }, payload)
-
+      
     }
+    ctx.status = 200
+  }
+
+  const deleteById = ctx => {
+    const { id } = ctx.request.params
+    User.deleteOne(id)
     ctx.status = 200
   }
   return {
@@ -116,7 +117,7 @@ const getUserController = () => {
     register,
     deleteById,
     updateById
-
+    
   }
 
 }

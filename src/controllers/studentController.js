@@ -14,13 +14,13 @@ const getStudentController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const studData = await Student.findById(id).populate('user').exec();
+      const studData = await Student.findOne({ user:id }).populate('user').exec();
       if (!studData) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
         return
       } else {
-        ctx.body = data
+        ctx.body = studData
         ctx.status = 200
       }
 
@@ -82,11 +82,12 @@ const getStudentController = () => {
       ctx.body = e.message
       return
     }
+    ctx.status = 200
   }
 
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Student.deleteById(id)
+    Student.deleteOne(id)
     ctx.status = 200
   }
 

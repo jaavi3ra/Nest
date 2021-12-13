@@ -11,6 +11,10 @@ const evaluationSchema = new mongoose.Schema({
     type: String, // fecha de entrega
     required: true,
   },
+  datetime: {
+    type: String, // fecha de entrega
+    required: true,
+  },
   subject: {
     type: ObjectId,
     ref: 'Subject',

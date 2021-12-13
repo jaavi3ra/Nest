@@ -8,7 +8,7 @@ const submissionSchema = new mongoose.Schema({
     required: true,
   },
   grade: {
-    type: Number,
+    type: String,
     required: true,
   },
   student: {

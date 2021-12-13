@@ -18,11 +18,19 @@ const subjectSchema = new mongoose.Schema({
     required: true,
   },
   student: {
-    type: ObjectId,
+    type: [ObjectId],
     ref: 'student',
     required: true,
   },
-  agenda: {
+  hour: {
+    type: String,
+    required: true,
+  },
+  day: {
+    type: String,
+    required: true,
+  },
+  date: {
     type: String,
     required: true,
   },
