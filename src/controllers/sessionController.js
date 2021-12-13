@@ -1,19 +1,37 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/session.js'
+import Session from '../Model/session.js'
 
 const { ObjectId } = moongose.Types
 
 const getSessionController = () => {
 
   const getAll = async ctx => {
-    const sessions = await userdata.find();
+    const sessions = await Session.find() 
+    .populate({
+      path: 'subject',
+      populate: {
+        path: 'student',
+        populate: {
+          path: 'user'
+        }
+      }
+    });
     ctx.body = sessions
   }
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const sessions = await userdata.findById(id);
+      const sessions = await Session.findById(id)
+      .populate({
+        path: 'subject',
+        populate: {
+          path: 'student',
+          populate: {
+            path: 'user'
+          }
+        }
+      });;
       if (!sessions) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -33,7 +51,10 @@ const getSessionController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       datetime: yup.string().required(),
-      subject: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      subject: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
 
     try {
@@ -43,7 +64,7 @@ const getSessionController = () => {
       ctx.body = e.message
       return
     }
-    const newsession = new userdata(payload)
+    const newsession = new Session(payload)
 
     try {
       const createdsessiom = await newsession.save()
@@ -68,7 +89,10 @@ const getSessionController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       datetime: yup.string().required(),
-      subject: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      subject: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -84,7 +108,7 @@ const getSessionController = () => {
       ctx.status = 404
       return
     }
-    userdata.deleteById(id)
+    Session.deleteById(id)
     ctx.status = 200
   }
   return {

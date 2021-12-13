@@ -13,7 +13,7 @@ const submissionSchema = new mongoose.Schema({
   },
   student: {
     type: ObjectId,
-    ref: 'User',
+    ref: 'Student',
     required: true,
   },
   evaluation: {

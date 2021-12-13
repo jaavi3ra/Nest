@@ -3,9 +3,9 @@ import mongoose from 'mongoose'
 const { ObjectId } = mongoose.Schema.Types
 
 const attendanceSchema = new mongoose.Schema({
-  user: {
+  student: {
     type: ObjectId,
-    ref: 'User',
+    ref: 'Student',
     required: true,
   },
   present: {

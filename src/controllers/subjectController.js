@@ -18,35 +18,7 @@ const getSubjectController = () => {
       .exec();
     ctx.body = subject
   }
-  //buscar subjects con id section
-  const getByIdSection = async ctx => {
-    const { id } = ctx.request.params
-    if (ObjectId.isValid(id)) {
-      const subject = await Subject
-       .find({ section: id })
-       .populate({
-          path: 'teacher',
-          populate: {
-            path: 'user'
-          }
-        })
-        .exec();
-      console.log(subject)
-      if (!subject) {
-        ctx.body = 'Invalid Credetial (4)'
-        ctx.status = 404
-      } else {
-        ctx.body = subject
-        ctx.status = 200
-      }
-    } else {
-      ctx.body = 'Invalid Credetial (5)'
-      ctx.status = 400
-      return
-    }
-  }
 
-  //buscar subjects con id subject
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
@@ -74,6 +46,35 @@ const getSubjectController = () => {
       return
     }
   }
+
+  //buscar subjects con id section
+  const getByIdSection = async ctx => {
+    const { id } = ctx.request.params
+    if (ObjectId.isValid(id)) {
+      const subject = await Subject
+        .find({ section: id })
+        .populate({
+          path: 'teacher',
+          populate: {
+            path: 'user'
+          }
+        })
+        .exec();
+      console.log(subject)
+      if (!subject) {
+        ctx.body = 'Invalid Credetial (4)'
+        ctx.status = 404
+      } else {
+        ctx.body = subject
+        ctx.status = 200
+      }
+    } else {
+      ctx.body = 'Invalid Credetial (5)'
+      ctx.status = 400
+      return
+    }
+  }
+
 
   const createsubject = async ctx => {
     const payload = ctx.request.body

@@ -1,20 +1,20 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/attendance.js'
+import Attendance from '../Model/attendance.js'
 
 const { ObjectId } = moongose.Types
 
 const getAttendanceController = () => {
   
   const getAll = async ctx => {
-    const attend = await userdata.find();
+    const attend = await Attendance.find();
     ctx.body = attend
   }
 
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const attend = await userdata.findById(id);
+      const attend = await Attendance.findById(id);
       if (!attend) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -33,9 +33,15 @@ const getAttendanceController = () => {
   const create = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
       present: yup.string().required(),
-      session: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      session: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -44,7 +50,7 @@ const getAttendanceController = () => {
       ctx.body = e.message
       return
     }
-    const newsection = new userdata(payload)
+    const newsection = new Attendance(payload)
 
     try {
       const createdsectiom = await newsection.save()
@@ -66,9 +72,15 @@ const getAttendanceController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
       present: yup.string().required(),
-      session: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      session: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -85,7 +97,7 @@ const getAttendanceController = () => {
       ctx.status = 404
       return
     }
-    userdata.deleteById(id)
+    Attendance.deleteById(id)
     ctx.status = 200
   }
   return {

@@ -1,20 +1,20 @@
 import moongose from 'mongoose'
 import bcrypt from 'bcryptjs'
 import * as yup from 'yup';
-import userdata from '../Model/users.js'
+import User from '../Model/users.js'
 
 const { ObjectId } = moongose.Types
 
 const getUserController = () => {
   const getAll = async ctx => {
-    const users = await userdata.find();
+    const users = await User.find();
     ctx.body = users
 
   }
   const getById = async ctx => {
     const { id } = ctx.request.params 
     if (ObjectId.isValid(id)) {
-      const users = await userdata.findById(id);
+      const users = await User.findById(id);
       if (!users) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -53,7 +53,7 @@ const getUserController = () => {
 
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(payload.password, salt)
-    const usernew = new userdata({ ...payload, password: hash })
+    const usernew = new User({ ...payload, password: hash })
 
     try {
       const createduser = await usernew.save()
@@ -71,7 +71,7 @@ const getUserController = () => {
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    userdata.deleteById(id)
+    User.deleteById(id)
     ctx.status = 200
   }
   const updateById = async ctx => {
@@ -103,9 +103,9 @@ const getUserController = () => {
     if (payload?.password) {
       const salt = bcrypt.genSaltSync(10)
       const hashed = bcrypt.hashSync(payload.password, salt)
-      await userdata.updateOne({ _id: new ObjectId(id) }, { ...payload, password: hashed })
+      await User.updateOne({ _id: new ObjectId(id) }, { ...payload, password: hashed })
     } else {
-      await userdata.updateOne({ _id: new ObjectId(id) }, payload)
+      await User.updateOne({ _id: new ObjectId(id) }, payload)
 
     }
     ctx.status = 200

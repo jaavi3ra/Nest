@@ -17,6 +17,11 @@ const subjectSchema = new mongoose.Schema({
     ref: 'Teacher',
     required: true,
   },
+  student: {
+    type: ObjectId,
+    ref: 'student',
+    required: true,
+  },
   agenda: {
     type: String,
     required: true,

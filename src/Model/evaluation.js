@@ -8,7 +8,7 @@ const evaluationSchema = new mongoose.Schema({
     required: true,
   },
   deadline: {
-    type: Date, // fecha de entrega
+    type: String, // fecha de entrega
     required: true,
   },
   subject: {

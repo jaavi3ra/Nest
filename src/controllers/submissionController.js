@@ -1,20 +1,20 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/submission.js'
+import Submission from '../Model/submission.js'
 
 const { ObjectId } = moongose.Types
 
 const getSubmissionController = () => {
 
   const getAll = async ctx => {
-    const submiData = await userdata.find();
+    const submiData = await Submission.find();
     ctx.body = submiData
 
   }
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const submiData = await userdata.findById(id);
+      const submiData = await Submission.findById(id);
       if (!submiData) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -47,7 +47,7 @@ const getSubmissionController = () => {
       ctx.body = e.message
       return
     }
-    const newsection = new userdata(payload)
+    const newsection = new Submission(payload)
 
     try {
       const createdsectiom = await newsection.save()
@@ -88,7 +88,7 @@ const getSubmissionController = () => {
       ctx.status = 404
       return
     } 
-    userdata.deleteById(id)
+    Submission.deleteById(id)
     ctx.status = 200
   }
   return {

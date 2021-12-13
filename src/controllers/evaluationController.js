@@ -1,19 +1,19 @@
 import moongose from 'mongoose'
 import * as yup from 'yup';
-import userdata from '../Model/evaluation.js'
+import Evaluation from '../Model/evaluation.js'
 
 const { ObjectId } = moongose.Types
 
 const getEvaluationController = () => {
 
   const getAll = async ctx => {
-    const evaData = await userdata.find();
+    const evaData = await Evaluation.find().populate('subject').exec();
     ctx.body = evaData
   }
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const evaData = await userdata.findById(id);
+      const evaData = await Evaluation.findById(id).populate('subject').exec();
       if (!evaData) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -31,8 +31,12 @@ const getEvaluationController = () => {
   const create = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      section_name: yup.string().required(),
-      users: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      name: yup.string().required(),
+      deadline: yup.string().required(),
+      subject: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
 
     try {
@@ -42,7 +46,7 @@ const getEvaluationController = () => {
       ctx.body = e.message
       return
     }
-    const newEva = new userdata(payload)
+    const newEva = new Evaluation(payload)
 
     try {
       const createdEva = await newEva.save()
@@ -65,8 +69,12 @@ const getEvaluationController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      section_name: yup.string().required(),
-      users: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) })
+      name: yup.string().required(),
+      deadline: yup.string().required(),
+      subject: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -82,7 +90,7 @@ const getEvaluationController = () => {
       ctx.status = 404
       return
     }
-    userdata.deleteById(id)
+    Evaluation.deleteById(id)
     ctx.status = 200
   }
   return {
