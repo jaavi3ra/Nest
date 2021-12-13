@@ -13,7 +13,7 @@ const getEvaluationController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const evaData = await Evaluation.findOne({ subject: id }).populate('subject').exec();
+      const evaData = await Evaluation.find({ subject: id }).populate('subject').exec();
       if (!evaData) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
