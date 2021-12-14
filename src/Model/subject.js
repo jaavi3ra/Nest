@@ -22,11 +22,14 @@ const subjectSchema = new mongoose.Schema({
     ref: 'student',
     required: true,
   },
-  schedule: {
-      type: [String],
-      required: true 
+  hour: {
+    type: [String],
+    required: true,
   },
-  
+  date: {
+    type: [String],
+    required: true,
+  },
 }, { timestamps: true })
 
 export default mongoose.model('Subject', subjectSchema)
