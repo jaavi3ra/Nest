@@ -6,10 +6,12 @@ import morgan from 'koa-morgan'
 
 
 const app = new Koa();
-
+var options = {
+    origin: '*'
+};
 app.use(morgan('dev'));
-app.use(cors());
-app.use(koaBody({jsonLimit: '1kb'}))
+app.use(cors(options));
+app.use(koaBody({jsonLimit: '1kb'}));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
