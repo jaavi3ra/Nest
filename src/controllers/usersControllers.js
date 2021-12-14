@@ -100,8 +100,7 @@ const getUserController = () => {
       const hashed = bcrypt.hashSync(payload.password, salt)
       await User.updateOne({ _id: new ObjectId(id) }, { ...payload, password: hashed })
     } else {
-      await User.updateOne({ _id: new ObjectId(id) }, payload)
-      
+      await User.updateOne({ _id: new ObjectId(id) }, payload)    
     }
     ctx.status = 200
   }

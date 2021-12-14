@@ -85,8 +85,8 @@ const getTeacherController = () => {
     }
     await Teacher.updateOne({ _id: new ObjectId(id) },payload)
     ctx.status = 200 
-
   }
+  
   const deleteById = ctx => {
     const { id } = ctx.request.params
     Teacher.deleteOne(id)
