@@ -10,7 +10,7 @@ var options = {
     origin: '*'
 };
 app.use(morgan('dev'));
-app.use(cors(options));
+app.use(cors({ origin: '*' }));
 app.use(koaBody({jsonLimit: '1kb'}));
 app.use(router.routes());
 app.use(router.allowedMethods());

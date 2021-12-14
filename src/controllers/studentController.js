@@ -63,7 +63,7 @@ const getStudentController = () => {
     }
   }
 
-  const updateById = ctx => {
+  const updateById = async ctx => {
     const { id } = ctx.request.params
     if (!ObjectId.isValid(id)) {
       ctx.status = 400
