@@ -22,6 +22,16 @@ const subjectSchema = new mongoose.Schema({
     ref: 'student',
     required: true,
   },
+  schedule: {
+    hour: {
+      type: [String],
+      required: true
+    },
+    day: {
+      type: [String],
+      required: true
+    }
+  },
   hour: {
     type: String,
     required: true,

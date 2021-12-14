@@ -88,8 +88,8 @@ const getSubjectController = () => {
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
-      hour: yup.string().required(),
-      date: yup.string().required()
+        hour: yup.array().of(yup.string().required()),
+        day: yup.array().of(yup.string().required())
     })
     try {
       yupSchema.validateSync(payload)
@@ -132,8 +132,8 @@ const getSubjectController = () => {
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
-      hour: yup.string().required(),
-      date: yup.string().required()
+        hour: yup.array().of(yup.string().required()),
+        day: yup.array().of(yup.string().required())
     })
     try {
       yupSchema.validateSync(payload)
