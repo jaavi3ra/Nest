@@ -23,23 +23,10 @@ const subjectSchema = new mongoose.Schema({
     required: true,
   },
   schedule: {
-    hour: {
       type: [String],
-      required: true
-    },
-    day: {
-      type: [String],
-      required: true
-    }
+      required: true 
   },
-  hour: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: String,
-    required: true,
-  },
+  
 }, { timestamps: true })
 
 export default mongoose.model('Subject', subjectSchema)
