@@ -7,14 +7,30 @@ const { ObjectId } = moongose.Types
 const getSubmissionController = () => {
 
   const getAll = async ctx => {
-    const submiData = await Submission.find();
+    const submiData = await Submission.find() 
+    .populate({
+      path: 'student',
+        populate: {
+          path: 'user' 
+        }
+      })
+    ;
     ctx.body = submiData
 
   }
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const submiData = await Submission.findById(id);
+      const submiData = await Submission.findOne({ 
+         user: id })
+        .populate({
+          path: 'student',
+            populate: {
+              path: 'user' 
+            }
+          })
+        
+        .exec();
       if (!submiData) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
