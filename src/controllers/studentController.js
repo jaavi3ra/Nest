@@ -72,7 +72,10 @@ const getStudentController = () => {
     const payload = ctx.request.body
 
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
       enrolled: yup.string().required(),
     })
     try {
@@ -82,7 +85,8 @@ const getStudentController = () => {
       ctx.body = e.message
       return
     }
-    ctx.status = 200
+    await Student.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
   }
 
   const deleteById = ctx => {

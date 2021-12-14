@@ -109,6 +109,8 @@ const getSubmissionController = () => {
       ctx.body = e.message
       return
     }
+    await Submission.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params

@@ -89,7 +89,6 @@ const getSubjectController = () => {
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
       hour: yup.string().required(),
-      day: yup.string().required(),
       date: yup.string().required()
     })
     try {
@@ -134,7 +133,6 @@ const getSubjectController = () => {
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) }),
       hour: yup.string().required(),
-      day: yup.string().required(),
       date: yup.string().required()
     })
     try {
@@ -144,7 +142,13 @@ const getSubjectController = () => {
       ctx.body = e.message
       return
     }
+    const updated = await Subject.updateOne({ _id: new ObjectId(id) },payload)
+    if(!updated){
+      ctx.status = 400
+      return
+    }
     ctx.status = 200
+    ctx.body = 'update success'
 
   }
 

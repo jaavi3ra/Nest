@@ -84,6 +84,8 @@ const getSectionController = () => {
       ctx.body = e.message
       return
     }
+    await Section.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
   }
 
   const deleteById = ctx => {

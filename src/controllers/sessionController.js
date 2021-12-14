@@ -80,6 +80,7 @@ const getSessionController = () => {
       return
     }
   }
+
   const updateById = async ctx => {
     const { id } = ctx.request.params
     if (!ObjectId.isValid(id)) {
@@ -101,6 +102,8 @@ const getSessionController = () => {
       ctx.body = e.message
       return
     }
+    await Session.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params

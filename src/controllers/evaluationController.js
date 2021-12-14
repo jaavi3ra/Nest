@@ -85,6 +85,8 @@ const getEvaluationController = () => {
       ctx.body = e.message
       return
     }
+    await Evaluation.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
   }
   const deleteById = ctx => {
     const { id } = ctx.request.params
@@ -92,7 +94,11 @@ const getEvaluationController = () => {
       ctx.status = 404
       return
     }
-    Evaluation.deleteOne(id)
+    const deleted = Evaluation.deleteOne(id)
+    if(!deleted){
+      ctx.status = 400
+      return
+    }
     ctx.status = 200
   }
   return {

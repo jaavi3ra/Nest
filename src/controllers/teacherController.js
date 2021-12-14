@@ -70,7 +70,10 @@ const getTeacherController = () => {
     const payload = ctx.request.body
 
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
       description: yup.string().required()
     })
     try {
@@ -80,6 +83,8 @@ const getTeacherController = () => {
       ctx.body = e.message
       return
     }
+    await Teacher.updateOne({ _id: new ObjectId(id) },payload)
+    ctx.status = 200 
 
   }
   const deleteById = ctx => {
