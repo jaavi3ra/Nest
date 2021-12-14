@@ -14,10 +14,5 @@ app.use(cors(options));
 app.use(koaBody({jsonLimit: '1kb'}));
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.use(async (ctx, next) => {
-    ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000');
-    ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-    await next();
-});
 
 export default app;
