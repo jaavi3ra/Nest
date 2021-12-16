@@ -13,7 +13,7 @@ const getSectionController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const sections = await Section.findOne({ users: id });
+      const sections = await Section.findOne({ user: id });
       if (!sections) {
         ctx.body = 'Invalid Credetial (2)'
         ctx.status = 404
@@ -34,7 +34,7 @@ const getSectionController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       section_name: yup.string().required(),
-      users: yup.string().test({ 
+      user: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) })
@@ -72,7 +72,7 @@ const getSectionController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       section_name: yup.string().required(),
-      users: yup.string().test({ 
+      user: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
         test: val => ObjectId.isValid(val) })
