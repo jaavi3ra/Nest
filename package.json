@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "dev": "nodemon -r dotenv/config ./src/index.js",
+    "start": "node -r dotenv/config ./src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.1.1",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
