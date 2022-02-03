@@ -7,29 +7,22 @@ const subjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  section: {
-    type: ObjectId,
-    ref: 'Section',
-    required: true,
-  },
   teacher: {
     type: ObjectId,
     ref: 'Teacher',
     required: true,
   },
-  student: {
+  schedule: {
     type: [ObjectId],
-    ref: 'student',
+    ref: 'Schedule',
     required: true,
   },
-  hour: {
-    type: [String],
-    required: true,
+  subject: {
+    type: [ObjectId],
+    ref: 'Subject',
+    required: false,
   },
-  date: {
-    type: [String],
-    required: true,
-  },
+  
 }, { timestamps: true })
 
 export default mongoose.model('Subject', subjectSchema)

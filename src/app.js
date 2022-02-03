@@ -1,9 +1,8 @@
 import Koa from 'koa'
-import router from './routes/index.js'
 import cors from '@koa/cors'
 import koaBody from 'koa-body'
 import morgan from 'koa-morgan'
-
+import router from './routes/index.js'
 
 const app = new Koa();
 

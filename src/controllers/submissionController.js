@@ -118,7 +118,7 @@ const getSubmissionController = () => {
       ctx.status = 404
       return
     } 
-    Submission.deleteOne(id)
+    Submission.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {

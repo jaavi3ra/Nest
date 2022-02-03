@@ -34,7 +34,10 @@ const getStudentController = () => {
   const createStudent = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({      //validacion
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
       enrolled: yup.string().required(),
     })
 
@@ -73,9 +76,9 @@ const getStudentController = () => {
 
     const yupSchema = yup.object().shape({
       user: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
       enrolled: yup.string().required(),
     })
     try {
@@ -91,7 +94,7 @@ const getStudentController = () => {
 
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Student.deleteOne(id)
+    Student.deleteOne({ _id: id })
     ctx.status = 200
   }
 

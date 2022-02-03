@@ -13,7 +13,14 @@ const getSectionController = () => {
   const getById = async ctx => {
     const { id } = ctx.request.params
     if (ObjectId.isValid(id)) {
-      const sections = await Section.findOne({ user: id });
+      const sections = await Section.findOne({ studentList : id })
+      .populate({
+          path: 'studentList',
+          populate: {
+              path: 'user'
+          }
+      }).exec();
+      
       if (!sections) {
         ctx.body = 'Invalid Credetial (2)'
         ctx.status = 404
@@ -34,10 +41,10 @@ const getSectionController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       section_name: yup.string().required(),
-      user: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+      studentList: yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -71,11 +78,10 @@ const getSectionController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      section_name: yup.string().required(),
-      user: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+      studentList: yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -84,6 +90,7 @@ const getSectionController = () => {
       ctx.body = e.message
       return
     }
+   
     await Section.updateOne({ _id: new ObjectId(id) },payload)
     ctx.status = 200 
   }
@@ -94,7 +101,7 @@ const getSectionController = () => {
       ctx.status = 404
       return
     }
-    Section.deleteOne(id)
+    Section.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {

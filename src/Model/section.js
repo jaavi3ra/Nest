@@ -7,9 +7,9 @@ const sectionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: {
+  studentList: {
     type: ObjectId,
-    ref: 'User',
+    ref: 'StudentList',
     required: true,
   },
 }, { timestamps: true })

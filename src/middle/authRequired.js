@@ -9,7 +9,9 @@ const authRequired = async (ctx, next) => {
         return
     }
     const [authType, token] = authorization.split(' ')
-    if (authType !== 'Bearer') { throw Error('Invalid auth type') }
+    if (authType !== 'Bearer') { 
+      throw Error('Invalid auth type') 
+    }
     const jwtPayload = jwtValidate(token)
     ctx.state.userSession = jwtPayload
   } catch (e) {

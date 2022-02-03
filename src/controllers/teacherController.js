@@ -31,11 +31,12 @@ const getTeacherController = () => {
   }
   const createTeacher = async ctx => {
     const payload = ctx.request.body
-
     const yupSchema = yup.object().shape({  //validacion
-      user: yup.string().test({ name: 'ObjectId', message: 'Invalid ObjectId', test: val => ObjectId.isValid(val) }),
+      user: yup.string().test({ 
+        name: 'ObjectId', 
+        message: 'Invalid ObjectId', 
+        test: val => ObjectId.isValid(val) }),
       description: yup.string().required(),
-
     })
     try {
       yupSchema.validateSync(payload)
@@ -45,7 +46,6 @@ const getTeacherController = () => {
       return
     }
     const newdata = new Teacher(payload)
-
     try {
       const createddata = await newdata.save()
       ctx.body = createddata
@@ -68,13 +68,13 @@ const getTeacherController = () => {
       return
     }
     const payload = ctx.request.body
-
     const yupSchema = yup.object().shape({
-      user: yup.string().test({ 
+      user : yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
-      description: yup.string().required()
+        test: val => ObjectId.isValid(val) 
+      }),
+      description : yup.string().required()
     })
     try {
       yupSchema.validateSync(payload)
@@ -89,7 +89,7 @@ const getTeacherController = () => {
   
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Teacher.deleteOne(id)
+    Teacher.deleteOne({_id: id})
     ctx.status = 200
   }
   return {

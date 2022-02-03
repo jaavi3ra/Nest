@@ -7,16 +7,7 @@ const { ObjectId } = moongose.Types
 const getSessionController = () => {
 
   const getAll = async ctx => {
-    const sessions = await Session.find() 
-    .populate({
-      path: 'subject',
-      populate: {
-        path: 'section',
-        populate: {
-          path: 'user'
-        }
-      }
-    });
+    const sessions = await Session.find().populate('subject').exec();
     ctx.body = sessions
   }
   const getById = async ctx => {
@@ -24,14 +15,12 @@ const getSessionController = () => {
     if (ObjectId.isValid(id)) {
       const sessions = await Session.find({ subject: id})
       .populate({
-        path: 'subject',
-        populate: {
-          path: 'section',
-          populate: {
-            path: 'user'
-          }
-        }
-      });;
+        path:'subject'
+      })
+      .populate({
+        path: 'datetime'
+      })
+      .exec();
       if (!sessions) {
         ctx.body = 'Invalid Credetial (1)'
         ctx.status = 404
@@ -50,11 +39,14 @@ const getSessionController = () => {
   const create = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      datetime: yup.string().required(),
-      subject: yup.string().test({ 
+      datetime: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+        test: val => ObjectId.isValid(val) })  ,
+      subject: yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
 
     try {
@@ -89,12 +81,11 @@ const getSessionController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      datetime: yup.string().required(),
-      subject: yup.string().test({ 
+      datetime: yup.string().test({ 
         name: 'ObjectId', 
         message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
-    })
+        test: val => ObjectId.isValid(val) })      
+     })
     try {
       yupSchema.validateSync(payload)
     } catch (e) {
@@ -102,7 +93,7 @@ const getSessionController = () => {
       ctx.body = e.message
       return
     }
-    await Session.updateOne({ _id: new ObjectId(id) },payload)
+    await Session.updateOne({ _id: new ObjectId(id) }, payload)
     ctx.status = 200 
   }
   const deleteById = ctx => {
@@ -111,7 +102,7 @@ const getSessionController = () => {
       ctx.status = 404
       return
     }
-    Session.deleteOne(id)
+    Session.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {

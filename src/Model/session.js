@@ -4,7 +4,8 @@ const { ObjectId } = mongoose.Schema.Types
 
 const sessionSchema = new mongoose.Schema({
   datetime: {
-    type: String,
+    type: ObjectId,
+    ref: 'Schedule',
     required: true,
   },
   subject: {

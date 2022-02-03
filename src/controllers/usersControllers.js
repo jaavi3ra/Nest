@@ -107,7 +107,7 @@ const getUserController = () => {
 
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    User.deleteOne(id)
+    User.deleteOne({_id: id})
     ctx.status = 200
   }
   return {

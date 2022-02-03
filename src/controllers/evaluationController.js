@@ -35,9 +35,9 @@ const getEvaluationController = () => {
       deadline: yup.string().required(),
       datetime: yup.string().required(),
       subject: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
 
     try {
@@ -74,9 +74,9 @@ const getEvaluationController = () => {
       deadline: yup.string().required(),
       datetime: yup.string().required(),
       subject: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -94,11 +94,7 @@ const getEvaluationController = () => {
       ctx.status = 404
       return
     }
-    const deleted = Evaluation.deleteOne(id)
-    if(!deleted){
-      ctx.status = 400
-      return
-    }
+    Evaluation.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {

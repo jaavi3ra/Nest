@@ -7,89 +7,66 @@ const { ObjectId } = moongose.Types
 const getSubjectController = () => {
 
   const getAll = async ctx => {
-    const subject = await Subject
-      .find()
-      .populate({
-        path: 'teacher',
-        populate: {
-          path: 'user'
-        }
-      })
-      .exec();
-    ctx.body = subject
+    const data = await Subject.find() .populate({
+      path: 'teacher',
+      populate: {
+        path: 'user'
+      }     
+    })
+    .exec();
+    ctx.body = data
   }
 
   const getById = async ctx => {
     const { id } = ctx.request.params
-    if (ObjectId.isValid(id)) {
-      const subject = await Subject
-        .findById(id)
+      if (ObjectId.isValid(id)) {
+        const subject = await Subject.findById( id )
         .populate({
           path: 'teacher',
           populate: {
             path: 'user'
-          }
+          }     
         })
-        .exec();
-      console.log(subject)
-      if (!subject) {
-        ctx.body = 'Invalid Credetial (4)'
-        ctx.status = 404
-      } else {
-        ctx.body = subject
-        ctx.status = 200
-      }
-
-    } else {
-      ctx.body = 'Invalid Credetial (5)'
-      ctx.status = 400
-      return
-    }
-  }
-
-  //buscar subjects con id section
-  const getByIdSection = async ctx => {
-    const { id } = ctx.request.params
-    if (ObjectId.isValid(id)) {
-      const subject = await Subject
-        .find({ section: id })
         .populate({
-          path: 'teacher',
-          populate: {
-            path: 'user'
-          }
+          path: 'schedule'         
+        })
+        .populate({
+          path: 'subject'         
         })
         .exec();
-      console.log(subject)
-      if (!subject) {
-        ctx.body = 'Invalid Credetial (4)'
-        ctx.status = 404
+        if (!subject) {
+          ctx.body = 'Invalid Credetial (1)'
+          ctx.status = 404
+          return 
+        } else {
+         
+          ctx.body = subject
+          ctx.status = 200
+        }
+        
       } else {
-        ctx.body = subject
-        ctx.status = 200
+        ctx.body = 'Invalid Credetial (5) '
+        ctx.status = 400
+        return
       }
-    } else {
-      ctx.body = 'Invalid Credetial (5)'
-      ctx.status = 400
-      return
-    }
   }
-
 
   const createsubject = async ctx => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       namesubject: yup.string().required(),
-      section: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
       teacher: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
-        hour: yup.array().of(yup.string().required()),
-        date: yup.array().of(yup.string().required())
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
+      schedule: yup.array().of(yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })),
+      subject: yup.array().of(yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })),
     })
     try {
       yupSchema.validateSync(payload)
@@ -123,18 +100,20 @@ const getSubjectController = () => {
     }
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
-      namesubject: yup.string().required(),
-      section: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
       teacher: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
-        hour: yup.array().of(yup.string().required()),
-        date: yup.array().of(yup.string().required())
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
+      schedule: yup.array().of(yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })),
+      subject: yup.array().of(yup.string().test({ 
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })),
     })
+    
     try {
       yupSchema.validateSync(payload)
     } catch (e) {
@@ -154,7 +133,7 @@ const getSubjectController = () => {
 
   const deleteById = ctx => {
     const { id } = ctx.request.params
-    Subject.deleteOne(id)
+    Subject.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {
@@ -162,8 +141,7 @@ const getSubjectController = () => {
     getAll,
     getById,
     deleteById,
-    updateById,
-    getByIdSection
+    updateById
   }
 }
 export default getSubjectController

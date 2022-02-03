@@ -34,14 +34,14 @@ const getAttendanceController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       student: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
       present: yup.string().required(),
       session: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -73,14 +73,14 @@ const getAttendanceController = () => {
     const payload = ctx.request.body
     const yupSchema = yup.object().shape({
       student: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) }),
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) }),
       present: yup.string().required(),
       session: yup.string().test({ 
-        name: 'ObjectId', 
-        message: 'Invalid ObjectId', 
-        test: val => ObjectId.isValid(val) })
+          name: 'ObjectId', 
+          message: 'Invalid ObjectId', 
+          test: val => ObjectId.isValid(val) })
     })
     try {
       yupSchema.validateSync(payload)
@@ -99,7 +99,7 @@ const getAttendanceController = () => {
       ctx.status = 404
       return
     }
-    Attendance.deleteOne(id)
+    Attendance.deleteOne({ _id: id })
     ctx.status = 200
   }
   return {
